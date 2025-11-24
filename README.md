@@ -17,6 +17,20 @@ It outputs code that can be directly used in NGSPICE for instance.
 - can generate multiple waveforms at once. It also allow comments to be added directly in the generated code.
 - allows saving and loading the bitstreams with their comments and options in a config file.
 
+## Screenshots
+
+- Main window
+  
+![pgen-b main window](./screenshots/pgenb_main_window.png)
+
+- Main window with multiple bitstreams
+  
+![pgen-b main window](./screenshots/pgenb_main_window_multiple_bitstreams.png)
+
+- About window
+  
+![pgen-b about window](./screenshots/pgenb_about_window.png)
+
 # About the author and license
 
 - Copyright 2025 Tiago Oliveira Weber
