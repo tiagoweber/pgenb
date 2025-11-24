@@ -8,13 +8,14 @@ It outputs code that can be directly used in NGSPICE for instance.
 
 ## Functionalities
 
-- Waveform preview;
-- Exports waveform(s) directly to external file with necessary simulation commands to test it
-- Copy waveform(s) to clipboard
-- Allows selecting period, rise/fall time, high and low voltage
+- has a waveform preview inside the program;
+- exports waveform(s) directly to external file with necessary simulation commands to test it
+- copy waveform(s) to clipboard
+- allows selecting period, rise/fall time, high and low voltage
 - allows the use of parameterized values or the direct use of the calculated ones 
-- Has the option to use half of the period for describing each bit in the bitstream (useful if you want to test how a system behaves with changes before the rising/falling clock)
-- Allows multiple waveforms to be generated
+- has the option to use half of the period for describing each bit in the bitstream (useful if you want to test how a system behaves with changes before the rising/falling clock)
+- can generate multiple waveforms at once. It also allow comments to be added directly in the generated code.
+- allows saving and loading the bitstreams with their comments and options in a config file.
 
 # About the author and license
 
