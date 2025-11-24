@@ -27,6 +27,7 @@ from datetime import date
 
 import webbrowser  # for hyperlink
 
+
 class tab:
     def __init__(self,name,parentframe,parent):
         self.name = name
@@ -158,11 +159,16 @@ class tab:
             spice_string_csv+="%g, %g\n"%(time,value)
 
         spice_string_pwl+=" )\n"
+        spice_string_pwl_descr+=" )\n"
 
 
         
-        spice_string_bottom = ".param simstep = {tr}\n"
-        spice_string_bottom+= ".param simstime = %g\n"%self.time_list[-1]                                                               
+        if self.use_params:
+            spice_string_bottom = ".param simstep = {tr}\n"
+        else:
+            spice_string_bottom = ".param simstep = %g\n"%self.trise
+            
+        spice_string_bottom+= ".param simtime = %g\n"%self.time_list[-1]                                                               
         spice_string_bottom+= ".tran {simstep} {simtime}\n"
         spice_string_bottom+= ".control\n"
         spice_string_bottom+= "run\n"
@@ -173,6 +179,7 @@ class tab:
         self.spice_string_header = spice_string_header
         self.spice_string_comment = spice_string_comment
         self.spice_string_pwl = spice_string_pwl
+        self.spice_string_pwl_descr = spice_string_pwl_descr
         self.spice_string_bottom = spice_string_bottom
         self.spice_string_csv = spice_string_csv
         
@@ -212,7 +219,7 @@ class tab:
                 time_list.append(base_time+self.trise/2)
 
                 value_list_descr.append(value_descr)
-                time_list_descr.append(base_time_descr+"+trise/2")
+                time_list_descr.append(base_time_descr+"+tr/2")
                 
             else:
                 base_time = old_time + self.tstep
@@ -222,14 +229,14 @@ class tab:
                 time_list.append(base_time-self.trise/2)
 
                 value_list_descr.append(old_value_descr)
-                time_list_descr.append( base_time_descr+"-trise/2")
+                time_list_descr.append( base_time_descr+"-tr/2")
                 
                 # end of transition
                 value_list.append(value)
                 time_list.append(base_time+self.trise/2)
 
                 value_list_descr.append(value_descr)
-                time_list_descr.append( base_time_descr+"+trise/2")
+                time_list_descr.append( base_time_descr+"+tr/2")
 
             base_time += self.tstep   #isnt it redundunt?
 
@@ -554,11 +561,28 @@ class program:
 
         
         tk.Label(parentframe, text="PGEN-B: PWL Generator from Bitstream", fg="black").pack(padx=1, pady=1)
-        tk.Label(parentframe, text="This program was created to help circuit designers have a quick and easy way to generate PWL voltage sources from bitstreams to use in SPICE simulators.", fg="black", wraplength=300).pack(padx=10, pady=10) 
-        tk.Label(parentframe, text="Created on November 2025", fg="black").pack(padx=1, pady=1)
-        tk.Label(parentframe, text="Author: Tiago Oliveira Weber", fg="black").pack(padx=1, pady=1) 
+        tk.Label(parentframe, text="This program was created to help circuit designers have a quick and easy way to generate PWL voltage sources from bitstreams to use in SPICE simulators.", fg="black", wraplength=400).pack(padx=10, pady=10) 
+        #tk.Label(parentframe, text="Created on November 2025", fg="black").pack(padx=1, pady=1)
+        #tk.Label(parentframe, text="Author: Tiago Oliveira Weber", fg="black").pack(padx=1, pady=1) 
+
+        tk.Label(parentframe, text="Copyright 2025 Tiago Oliveira Weber", fg="black").pack(padx=1, pady=1) 
+        tk.Label(parentframe, text="License: MIT License", fg="black").pack(padx=1, pady=1)
+        
+        link_repo = tk.Label(parentframe, text="github.com/tiagoweber/pgenb", fg="blue")
+        link_repo.pack(padx=1, pady=1)
+        link_repo.bind("<Button-1>", lambda e:self.open_url("https://github.com/tiagoweber/pgenb"))
+        
+        link_website = tk.Label(parentframe, text="www.tiagoweber.com.br", fg="blue")
+        link_website.pack(padx=1, pady=1)
+        link_website.bind("<Button-1>", lambda e:self.open_url("https://www.tiagoweber.com.br"))
+        
+        tk.Label(parentframe, text="Contact: tiago.oliveira.weber@gmail.com", fg="black").pack(padx=1, pady=1) 
+
         
         parentframe.pack(expand=True,fill="both", padx=1, pady=1)
+
+    def open_url(self,url):
+        webbrowser.open(url)
         
     def clean_tabs(self,keep_self_tabs=False):
 
@@ -791,14 +815,14 @@ class program:
         if file_path:
             try:
                 with open(file_path, 'w') as fw:
-                    for t, selected_tab in enumerate(self.tabs):
+                    for t, selected_tab in enumerate(self.tabs):                        
                         if t == 0:
                             fw.write(selected_tab.spice_string_about)
-                            if (self.use_params == 1):
+                            if (selected_tab.use_params == 1):
                                 fw.write(selected_tab.spice_string_header)
                             
                         fw.write(selected_tab.spice_string_comment)
-                        if (self.use_params):
+                        if (selected_tab.use_params):
                             fw.write(selected_tab.spice_string_pwl_descr)
                         else:
                             fw.write(selected_tab.spice_string_pwl)
@@ -833,9 +857,9 @@ class program:
             
             if t == 0:
                 #self.root.clipboard_append(selected_tab.spice_string_about)
-                #self.root.clipboard_append(selected_tab.spice_string_header)
-                pass
-
+                if (selected_tab.use_params):
+                    self.root.clipboard_append(selected_tab.spice_string_header)
+                    
             self.root.clipboard_append(selected_tab.spice_string_pwl)
 
                 
@@ -844,7 +868,10 @@ class program:
         string_to_clipboard = selected_tab.spice_string_header+selected_tab.spice_string_pwl
 
         self.root.clipboard_clear()   # part of Tk
-        #self.root.clipboard_append(selected_tab.spice_string_header)
+
+        if (selected_tab.use_params):
+            self.root.clipboard_append(selected_tab.spice_string_header)
+        
         self.root.clipboard_append(selected_tab.spice_string_pwl)
 
 
@@ -858,9 +885,11 @@ class program:
             try:
                 with open(file_path, 'w') as fw:
                     selected_tab = self.tabs[self.tab_index]
-                    if self.use_params == 1:
+
+                    fw.write(selected_tab.spice_string_about)
+                    if selected_tab.use_params == 1:
                         fw.write(selected_tab.spice_string_header)
-                    if self.use_params == 1:
+                    if selected_tab.use_params == 1:
                         fw.write(selected_tab.spice_string_pwl_descr)
                     else:
                         fw.write(selected_tab.spice_string_pwl)
