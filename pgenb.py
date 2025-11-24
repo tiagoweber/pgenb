@@ -179,7 +179,7 @@ class tab:
         # populate self.text_area
         #self.text_area
         if self.use_params:
-            self.text_area.insert(tk.INSERT,spice_string_about+spice_string_header+spice_string_comment+spice_string_pwl+spice_string_bottom)
+            self.text_area.insert(tk.INSERT,spice_string_about+spice_string_header+spice_string_comment+spice_string_pwl_descr+spice_string_bottom)
         else: 
             self.text_area.insert(tk.INSERT,spice_string_about+spice_string_comment+spice_string_pwl+spice_string_bottom)
         
