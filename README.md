@@ -16,10 +16,10 @@ It outputs code that can be directly used in NGSPICE for instance.
 - Has the option to use half of the period for describing each bit in the bitstream (useful if you want to test how a system behaves with changes before the rising/falling clock)
 - Allows multiple waveforms to be generated
 
-# About the author
+# About the author and license
 
-Copyright 2025 Tiago Oliveira Weber
-License: MIT License
-Repository: https://github.com/tiagoweber
-Website: www.tiagoweber.com.br
-Contact: tiago.oliveira.weber@gmail.com
+- Copyright 2025 Tiago Oliveira Weber
+- License: MIT License
+- Repository: https://github.com/tiagoweber/pgenb
+- Author professional website: www.tiagoweber.com.br
+- Contact: tiago.oliveira.weber@gmail.com
