@@ -8,7 +8,7 @@ This program was created to help circuit designers have a quick and easy way to 
 
 Copyright 2025 Tiago Oliveira Weber
 License: MIT License
-Repository: https://github.com/tiagoweber
+Repository: https://github.com/tiagoweber/pgenb
 Website: www.tiagoweber.com.br
 Contact: tiago.oliveira.weber@gmail.com
 """
@@ -271,7 +271,7 @@ class tab:
     def button_delete(self):
         # delete itself
         tab_id = self.parent.tabControl.select()
-        print("Tab id: %s"%tab_id)
+        # print("Tab id: %s"%tab_id)
 
         #before forgetting the tab_id, make sure to select the first one (or one that is not the "+" one)
         #self.parent.tabControl.tabs()[0]
@@ -315,12 +315,11 @@ class tab:
                 self.update_figure()
                 self.generate_code()
 
-        except (ValueError, TypeError) as e:
-            #print(f"An error occurred: {e}")
+        except (ValueError, TypeError) as e:            
             messagebox.showerror("Error",f"An error occurred: {e}")
     
     def populate(self):
-        print("populating tab")
+        #print("populating tab")
         self.is_populated = True
         
         tab_line1 = tk.Frame(self.tabframe)# bg="lightyellow")
@@ -749,7 +748,7 @@ class program:
                     # print header
                     fw.write("Time")
                     for selected_tab in self.tabs:
-                        print("tab name: %s "%selected_tab.name)
+                        #print("tab name: %s "%selected_tab.name)
                         fw.write(", %s"%selected_tab.name)
                         
                     fw.write("\n")
@@ -889,7 +888,6 @@ class program:
                 tab.add()
                 tab.button_generate()
 
-            #self.tabControl.add(tab_elem[0], text=tab_elem[1])
 
         # select the last one
         self.tab_index = len(self.tabControl.tabs())-1
@@ -904,22 +902,3 @@ class program:
 
             
 program()
-
-
-# nested_frame = tk.Frame(frame, width=200, height=200, bg="red")
-# tk.Label(nested_frame, text="nested_frame", fg="black").pack(padx=1, pady=1) 
-# nested_frame.pack(expand=True,fill="both",padx=1, pady=1)
-
-# nested_frame2 = tk.Frame(nested_frame, width=100, height=100, bg="blue")
-# tk.Label(nested_frame2, text="nested_frame2", fg="black").pack(padx=1, pady=1)
-# nested_frame2.pack(expand=True,fill="both", padx=1, pady=1)
-
-# nested_frame3_left = tk.Frame(nested_frame2, width=50, height=100, bg="gray")
-# tk.Label(nested_frame3_left, text="nested_frame3_left", fg="black").pack(padx=1, pady=1)
-# nested_frame3_left.pack(side="left",expand=True,fill="both", padx=1, pady=1)
-
-# nested_frame4_right = tk.Frame(nested_frame2, width=50, height=100, bg="black")
-# tk.Label(nested_frame4_right, text="nested_frame4_right", fg="black").pack(padx=1, pady=1)
-# nested_frame4_right.pack(side="right", expand=True, fill="both", padx=1, pady=1)
-
-
